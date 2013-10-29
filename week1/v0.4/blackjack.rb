@@ -15,7 +15,19 @@ card_deck = { 'DA' => 11, 'D2' => 2, 'D3' => 3, 'D4' => 4 , 'D5' => 5 , 'D6' => 
 
 end
 
-#Show 
+def card_grahic(card_value, card_suit)
+  
+  if card_value.to_s.length == 1
+  
+    return " _________\n|         |\n|       #{card_value} |\n|         |\n|    #{card_suit}    |\n|         |\n| #{card_value}       |\n|_________|\n"
+
+  else
+
+    return " _________\n|         |\n|      #{card_value} |\n|         |\n|    #{card_suit}    |\n|         |\n| #{card_value}      |\n|_________|\n"
+
+  end
+end
+
 def players_hand(players_cards)
 
   @eleven_found = 0
@@ -47,7 +59,7 @@ def players_hand(players_cards)
     end 
 
     #Build a string of the current players position
-    @current_player_cards = @current_player_cards  + " [" + y.to_s + " of " +  suit(x[0,1]) + "]"
+    @current_player_cards = @current_player_cards  + card_grahic(y.to_s, x[0,1]) # [" + y.to_s + " of " +  suit(x[0,1]) + "]"
 
   end 
 
@@ -84,7 +96,7 @@ def dealers_hand(dealers_cards)
     end 
 
     #Build a string of the current players position
-    @current_dealer_cards = @current_dealer_cards  + " [" + y.to_s + " of " +  suit(x[0,1]) + "]"
+    @current_dealer_cards = @current_dealer_cards  + card_grahic(y.to_s, x[0,1]) #" [" + y.to_s + " of " +  suit(x[0,1]) + "]"
 
   end 
 
@@ -106,6 +118,48 @@ def suit(card_suit)
 	return suit
 end
 
+def show_cards(current_cards, card_number_total)
+
+    puts "#{current_cards}\n\n"
+
+    puts "Cards total to #{card_number_total}\n\n"
+
+    puts "********"
+    puts "*      *"
+
+    if card_number_total.to_s.length == 1
+      
+      puts "*  #{card_number_total}   *"
+
+    else
+
+      puts "*  #{card_number_total}  *"
+
+    end
+    
+    puts "*      *"
+    puts "********\n\n"
+
+end
+
+def game_over(message)
+
+  puts "*****************"
+
+  if message == "YOU LOST" || message == "YOU BUST"
+
+    puts "*    " + message +  "   *"
+
+  else
+
+    puts "*    " + message +  "    *"  
+
+  end
+  
+  puts "*   GAME OVER   *\n*****************\n\n"
+
+end
+
 puts "Welcome to Black Jack"
 puts "Please enter your name"
 
@@ -120,7 +174,8 @@ players_cards = {card => @player_card_number}
 catch(:stop) do
   while true
 
-    puts "Dealing >>>>>>>>>\n\n"
+    puts "==========================YOUR TURN=================================="
+    puts "Dealing >>>>>>>>>"
 
     deal_card
     card = @card.to_s.tr '"[]',''
@@ -129,8 +184,6 @@ catch(:stop) do
     #p "&&&&DEBUG INFO: (Cards that HAVE being dealt) #{players_cards}&&&&&"
     #players_cards
 
-    puts "================================================================"
-
     players_hand(players_cards)
 
     if @player_card_number_total >= 22 && @eleven_found == 1
@@ -138,33 +191,29 @@ catch(:stop) do
       @player_card_number_total = 21
 
     end
+    
+    show_cards(@current_player_cards, @player_card_number_total)
 
-    puts "You have the#{@current_player_cards}\n\n"
+#    puts "You have the#{@current_player_cards}\n\n"
 
-    puts "Your cards total to #{@player_card_number_total}\n\n"
+    #puts "Your cards total to #{@player_card_number_total}\n\n"
 
-    puts "********"
-    puts "*      *"
-    puts "*  #{@player_card_number_total}  *"
-    puts "*      *"
-    puts "********"
+    #puts "********"
+    #puts "*      *"
+    #puts "*  #{@player_card_number_total}  *"
+    #puts "*      *"
+    #puts "********\n\n"
 
     if @player_card_number_total >= 22
       
-      puts "\n\n"
-      puts "*****************"
-      puts "*  YOUR BUSTED  *"
-      puts "*   GAME OVER   *"
-      puts "*****************"
-      puts "\n\n"
+      game_over("YOU BUST")
+
       break
 
     end
 
     puts "===>>>> Do you want to another card or stick?"
     puts "<<<<=== Type d to deal or s to stick\n\n"
-    puts "================================================================"
-
 
     user_response = gets.chomp
 
@@ -173,7 +222,7 @@ catch(:stop) do
         puts "You chose to stick\n\n"
         puts "You have the#{@current_player_cards}\n\n"
         puts "Your cards total to #{@player_card_number_total}\n\n"
-        puts "================================================================"
+        puts "========================YOUR TURN ENDED==========================="
         
         deal_card
         card = @card.to_s.tr '"[]',''
@@ -182,6 +231,7 @@ catch(:stop) do
         
         while true
 
+          puts "==========================DEALER TURN============================="
           puts "Dealing >>>>>>>>>\n\n"
 
           deal_card
@@ -190,19 +240,9 @@ catch(:stop) do
 
           #p "&&&&DEBUG INFO: (Dealer Cards that HAVE being dealt) #{dealers_cards}&&&&&"
 
-          puts "================================================================"
-
           dealers_hand(dealers_cards)
 
-          puts "The dealer has the#{@current_dealer_cards}\n\n"
-
-          puts "Dealer cards total to #{@dealer_card_number_total}\n\n"
-
-          puts "********"
-          puts "*      *"
-          puts "*  #{@dealer_card_number_total}  *"
-          puts "*      *"
-          puts "********"
+          show_cards(@current_dealer_cards, @dealer_card_number_total)
 
           if @dealer_card_number_total >= 22 && @eleven_found == 1
 
@@ -211,28 +251,32 @@ catch(:stop) do
           end
           
           if @dealer_card_number_total >= 17
-          
-            if @dealer_card_number_total >= 22 || @player_card_number_total > @dealer_card_number_total 
-              
-              puts "\n\n"
-              puts "*****************"
-              puts "*    YOU WIN    *"
-              puts "*   GAME OVER   *"
-              puts "*****************"
-              puts "\n\n"
-              throw :stop
             
-            else @dealer_card_number_total > @player_card_number_total 
+            puts "=======================DEALER TURN ENDED==========================="
 
-              puts "\n\n"
-              puts "*****************"
-              puts "*   YOU LOST    *"
-              puts "*   GAME OVER   *"
-              puts "*****************"
-              puts "\n\n"
-              throw :stop
+            if @dealer_card_number_total >= 22
+              #binding.pry 
+              game_over("YOU WON")
+            
+            elsif @player_card_number_total >= 22
+              #binding.pry
+              game_over("YOU LOST")
 
+            elsif @player_card_number_total > @dealer_card_number_total #&& @player_card_number_total <= 22
+              #binding.pry
+              game_over("YOU WON")
+
+            elsif @dealer_card_number_total > @player_card_number_total
+              #binding.pry
+              game_over("YOU LOST")
+            
+            elsif @dealer_card_number_total == @player_card_number_total
+              #binding.pry
+              game_over("YOU TIE")
+              
             end
+
+            throw :stop
           
           end
           
