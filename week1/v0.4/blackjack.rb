@@ -59,7 +59,8 @@ def players_hand(players_cards)
     end 
 
     #Build a string of the current players position
-    @current_player_cards = @current_player_cards  + card_grahic(y.to_s, x[0,1]) # [" + y.to_s + " of " +  suit(x[0,1]) + "]"
+    
+    @current_player_cards = @current_player_cards  + card_grahic(x[1,2], x[0,1]) # [" + y.to_s + " of " +  suit(x[0,1]) + "]"
 
   end 
 
@@ -96,7 +97,7 @@ def dealers_hand(dealers_cards)
     end 
 
     #Build a string of the current players position
-    @current_dealer_cards = @current_dealer_cards  + card_grahic(y.to_s, x[0,1]) #" [" + y.to_s + " of " +  suit(x[0,1]) + "]"
+    @current_dealer_cards = @current_dealer_cards  + card_grahic(x[1,2], x[0,1]) #" [" + y.to_s + " of " +  suit(x[0,1]) + "]"
 
   end 
 
@@ -146,7 +147,7 @@ def game_over(message)
 
   puts "*****************"
 
-  if message == "YOU LOST" || message == "YOU BUST"
+  if message == "YOU LOST" || message == "YOU BUST" || message == "YOU TIED"
 
     puts "*    " + message +  "   *"
 
@@ -194,15 +195,6 @@ catch(:stop) do
     
     show_cards(@current_player_cards, @player_card_number_total)
 
-#    puts "You have the#{@current_player_cards}\n\n"
-
-    #puts "Your cards total to #{@player_card_number_total}\n\n"
-
-    #puts "********"
-    #puts "*      *"
-    #puts "*  #{@player_card_number_total}  *"
-    #puts "*      *"
-    #puts "********\n\n"
 
     if @player_card_number_total >= 22
       
@@ -253,6 +245,10 @@ catch(:stop) do
           if @dealer_card_number_total >= 17
             
             puts "=======================DEALER TURN ENDED==========================="
+
+            puts "=========================GAME SUMMARY=============================="
+            puts "Your cards total to #{@player_card_number_total} and Dealer cards total to #{@dealer_card_number_total}"
+            puts "=========================GAME SUMMARY=============================="
 
             if @dealer_card_number_total >= 22
               #binding.pry 
