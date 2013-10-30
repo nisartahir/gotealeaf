@@ -157,32 +157,34 @@ def show_cards(current_cards, card_number_total)
     
 end
 
-def game_over(message)
 
-  puts "*****************"
+loop do
 
-  if message == "YOU LOST" || message == "YOU BUST" || message == "YOU TIED"
-
-    puts "*    " + message +  "   *"
-
-  else
-
-    puts "*    " + message +  "    *"  
-
-  end
-  
-  puts "*   GAME OVER   *\n*****************\n\n"
-
-end
-
-puts "Welcome to Black Jack"
+system("clear")
 
 username = ENV['USER'].to_s.capitalize
 
-puts "Hello #{username}"
+puts "Would you like to play a game of Black Jack, #{username}?"
+puts "Press Enter to start or n and Enter to exit"
+user_response = gets.chomp
 
-#player = gets.chomp
-#puts "Hello #{player}"
+if user_response == "n"
+
+  loop exit
+
+end
+
+@card = nil
+@player_card_number = nil
+@dealer_card_number = nil
+@eleven_found = 0
+@player_card_number_total = 0
+@dealer_card_number_total = 0
+@current_player_cards = ""
+players_cards = nil
+
+puts "Welcome to Black Jack #{username}"
+
 players_cards = {}
 
 deal_card
@@ -194,6 +196,8 @@ catch(:stop) do
 
     puts "==========================YOUR TURN=================================="
     puts "Dealing >>>>>>>>>"
+
+    sleep 1
 
     deal_card
     card = @card.to_s.tr '"[]',''
@@ -215,22 +219,24 @@ catch(:stop) do
 
     if @player_card_number_total >= 22
       
-      game_over("YOU BUST")
+      puts "=========================GAME SUMMARY=============================="
+      puts "Unfortunately, you busted the game #{username}"
+      puts "=========================GAME SUMMARY==============================\n\n"
 
       break
 
     end
 
-    puts "===>>>> Do you want to another card or stick?"
-    puts "<<<<=== Type d to deal or s to stick\n\n"
+    puts "===>>>> Do you want another card or stay/stick #{username}?"
+    puts "<<<<=== Press Enter deal or s to stay/stick\n\n"
 
     user_response = gets.chomp
 
     if user_response =="s"
 
-        puts "You chose to stick\n\n"
-        puts "You have the#{@current_player_cards}\n\n"
-        puts "Your cards total to #{@player_card_number_total}\n\n"
+        puts "You chose to stay/stick\n\n"
+        #puts "#{@current_player_cards}\n\n"
+        #puts "Your cards total to #{@player_card_number_total}\n\n"
         puts "========================YOUR TURN ENDED==========================="
         
         deal_card
@@ -241,7 +247,9 @@ catch(:stop) do
         while true
 
           puts "==========================DEALER TURN============================="
-          puts "Dealing >>>>>>>>>\n\n"
+          puts "Dealing, please wait >>>>>>>>>\n\n"
+
+          sleep 1
 
           deal_card
           card = @card.to_s.tr '"[]',''
@@ -253,6 +261,10 @@ catch(:stop) do
 
           show_cards(@current_dealer_cards, @dealer_card_number_total)
 
+          puts "please wait >>>>>>>>>\n\n"
+
+          sleep 4
+
           if @dealer_card_number_total >= 22 && @eleven_found == 1
 
             @dealer_card_number_total = 21
@@ -261,33 +273,42 @@ catch(:stop) do
           
           if @dealer_card_number_total >= 17
             
-            puts "=======================DEALER TURN ENDED==========================="
+            puts "=======================DEALER TURN ENDED===========================\n\n"
 
             puts "=========================GAME SUMMARY=============================="
             puts "Your cards total to #{@player_card_number_total} and Dealer cards total to #{@dealer_card_number_total}"
-            puts "=========================GAME SUMMARY=============================="
+            
 
             if @dealer_card_number_total >= 22
               #binding.pry 
-              game_over("YOU WON")
+              #game_over("YOU WON")
+              puts "You won the game #{username}"
             
             elsif @player_card_number_total >= 22
               #binding.pry
-              game_over("YOU LOST")
+              #game_over("YOU LOST")
+              puts "You lost the game #{username}"
 
             elsif @player_card_number_total > @dealer_card_number_total 
               #binding.pry
-              game_over("YOU WON")
+              #game_over("YOU WON")
+              puts "You won the game #{username}"
 
             elsif @dealer_card_number_total > @player_card_number_total || @dealer_card_number_total == 21
               #binding.pry
-              game_over("YOU LOST")
+              #game_over("YOU LOST")
+              puts "You lost the game #{username}"
             
             elsif @dealer_card_number_total == @player_card_number_total
               #binding.pry
-              game_over("YOU TIE")
+              #game_over("YOU TIE")
+              puts "You tied the game #{username}"
               
             end
+
+            puts "=========================GAME SUMMARY==============================\n\n"
+            puts "Press Enter to continue ..."
+            user_response = gets.chomp
 
             throw :stop
           
@@ -298,6 +319,8 @@ catch(:stop) do
     end 
 
   end
+
+end
 
 end
 
