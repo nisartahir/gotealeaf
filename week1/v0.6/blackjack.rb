@@ -31,24 +31,17 @@ end
 
 def card_grahics(cards)
 
-top_line = " _________ "
-first_line = "|         |"
-third_line = "|         |"
-fifth_line = "|         |"
-sixth_line = "|         |"
-bottom_line = "|_________|"
-
 number_of_cards = cards.count
 array_number = 0
 
-top_line1 = ""
-first_line1 = ""
-second_line1 = ""
-third_line1 = ""
-fourth_line1 = ""
-fifth_line1 = ""
-sixth_line1 = ""
-bottom_line1 = ""
+top_line = ""
+first_line = ""
+second_line = ""
+third_line = ""
+fourth_line = ""
+fifth_line = ""
+sixth_line = ""
+bottom_line = ""
 
 card_suit = ""
 card_number = []
@@ -64,47 +57,46 @@ while number_of_cards > 0
   
   number_of_cards = number_of_cards - 1
 
-
-  top_line1 << top_line
-  first_line1 << first_line
+  top_line << " _________ "
+  first_line << "|         |"
   
   if card_number[array_number].to_s.length == 1
-    second_line1 << "|       #{card_number[array_number]} |"
+    second_line << "|       #{card_number[array_number]} |"
   else
-    second_line1 << "|      #{card_number[array_number]} |"
+    second_line << "|      #{card_number[array_number]} |"
   end
     
-  third_line1 << third_line
-  fourth_line1 <<  "|    #{card_suit[array_number]}    |"
-  fifth_line1 << fifth_line
+  third_line << "|         |"
+  fourth_line <<  "|    #{card_suit[array_number]}    |"
+  fifth_line << "|         |"
   
   if card_number[array_number].to_s.length == 1
-    sixth_line1 << "| #{card_number[array_number]}       |"
+    sixth_line << "| #{card_number[array_number]}       |"
   else
-    sixth_line1 << "| #{card_number[array_number]}      |"
+    sixth_line << "| #{card_number[array_number]}      |"
   end
 
-  bottom_line1 << bottom_line
+  bottom_line << "|_________|"
 
   array_number = array_number + 1
 
 end
 
-print top_line1
+print top_line
 puts "\n"
-print first_line1
+print first_line
 puts "\n"
-print second_line1
+print second_line
 puts "\n"
-print third_line1
+print third_line
 puts "\n"
-print fourth_line1
+print fourth_line
 puts "\n"
-print fifth_line1
+print fifth_line
 puts "\n"
-print sixth_line1
+print sixth_line
 puts "\n"
-print bottom_line1
+print bottom_line
 
 end
 
