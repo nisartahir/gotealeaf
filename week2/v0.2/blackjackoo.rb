@@ -88,6 +88,78 @@ module Cards
     
   end
 
+  def card_grahics(cards)
+
+    number_of_cards = cards.count
+    array_number = 0
+
+    top_line = ""
+    first_line = ""
+    second_line = ""
+    third_line = ""
+    fourth_line = ""
+    fifth_line = ""
+    sixth_line = ""
+    bottom_line = ""
+
+    card_suit = ""
+    card_number = []
+
+    cards.each do |x , y|
+      
+      card_suit << x[0,1]
+      card_number<< x[1,2]
+
+    end
+
+    while number_of_cards > 0
+      
+      number_of_cards = number_of_cards - 1
+
+      top_line << " _________ "
+      first_line << "|         |"
+      
+      if card_number[array_number].to_s.length == 1
+        second_line << "|       #{card_number[array_number]} |"
+      else
+        second_line << "|      #{card_number[array_number]} |"
+      end
+        
+      third_line << "|         |"
+      fourth_line <<  "|    #{card_suit[array_number]}    |"
+      fifth_line << "|         |"
+      
+      if card_number[array_number].to_s.length == 1
+        sixth_line << "| #{card_number[array_number]}       |"
+      else
+        sixth_line << "| #{card_number[array_number]}      |"
+      end
+
+      bottom_line << "|_________|"
+
+      array_number = array_number + 1
+
+    end
+
+    print top_line
+    puts "\n"
+    print first_line
+    puts "\n"
+    print second_line
+    puts "\n"
+    print third_line
+    puts "\n"
+    print fourth_line
+    puts "\n"
+    print fifth_line
+    puts "\n"
+    print sixth_line
+    puts "\n"
+    print bottom_line
+
+  end
+
+
 end
 
 
@@ -119,87 +191,133 @@ include Cards
   
 end
 
-deck = Deck.new('deck')
+class Blackjack
 
-cards = []
-@player_total = 0
+  attr_accessor  :player, :dealer, :deck
 
-cards << deck.deal
+  def initialize
 
-Nisar = Player.new("Nisar")
+    @player = Player.new("Nisar")
+    @dealer = Dealer.new("Dealer")
 
-while true
-
-  system("clear")
-
-  cards << deck.deal
-  
-  total = Nisar.total(cards)
-
-  puts Nisar.name + " has been dealt " + cards.to_s
-  puts Nisar.name + " has a total of " + total.to_s
-
-  if Nisar.backjack?(cards) == true
-    puts "You win #{Nisar.name}, you have BlackJack"
-    exit
-  elsif Nisar.bust?(total) == true
-    puts "You lose #{Nisar.name}, you have busted"
-    exit
   end
 
-  puts "===>>>> Do you want another card or stay/stick #{Nisar.name}?"
-  puts "<<<<=== Press Enter deal or s to stay/stick\n\n"
+  def run
 
-  user_response = gets.chomp
+    loop do
+      
+      system("clear")
 
-  if user_response =="s"
-    @player_total = total
-    break    
+      username = ENV['USER'].to_s.capitalize
+
+      puts "Would you like to play a game of Black Jack, #{username}?"
+      puts "Press Enter to start or n and Enter to exit"
+      user_response = gets.chomp
+
+      if user_response == "n"
+
+        loop exit
+
+      end
+
+      deck = Deck.new('deck')
+
+      cards = []
+      @player_total = 0
+
+      cards << deck.deal
+
+      until user_response == "s" do
+
+        puts "==========================YOUR TURN=================================="
+        puts "Dealing >>>>>>>>>"
+
+        cards << deck.deal
+        
+        total = @player.total(cards)
+
+        @player.card_grahics(cards)
+        
+        puts "\n"
+        puts @player.name + " has a total of " + total.to_s
+
+        if @player.backjack?(cards) == true
+          puts "You win #{@player.name}, you have BlackJack"
+          break
+        elsif @player.bust?(total) == true
+          puts "You lose #{@player.name}, you have busted"
+          break
+        end
+
+        puts "\n===>>>> Do you want another card or stay/stick #{@player.name}?"
+        puts "<<<<=== Press Enter deal or s to stay/stick\n\n"
+
+        user_response = gets.chomp
+
+        if user_response =="s"
+          @player_total = total
+
+
+          puts "You chose to stay/stick\n\n"
+
+          puts "========================YOUR TURN ENDED==========================="
+          cards = []
+          @dealer_total = 0
+
+          cards << deck.deal
+
+          while true
+            
+            puts "==========================DEALER TURN============================="
+
+            cards << deck.deal
+
+            total = @dealer.total(cards)
+
+            @dealer.card_grahics(cards)
+            puts "\n"
+            
+            puts @dealer.name + " has a total of " + total.to_s
+
+            if total >= 17
+              @dealer_total = total
+              break
+            end
+            
+          end
+
+          puts "=======================DEALER TURN ENDED===========================\n\n"
+          puts "=========================GAME SUMMARY=============================="
+          puts "Your cards total to #{@player_total} and Dealer cards total to #{@dealer_total}"
+                
+
+          if @dealer.backjack?(cards) == true
+            puts "You lose #{@player.name}, #{@dealer.name} has BlackJack"
+          elsif @dealer.bust?(total) == true
+            puts "You win #{@player.name}, #{@dealer.name} has busted"
+          elsif @player_total > @dealer_total           
+            puts "You won the game #{@player.name}"
+          elsif @dealer_total > @player_total
+            puts "#{@dealer.name} won the game"
+          elsif @dealer_total == @player_total
+            puts "The game was a tie"
+          end
+
+          puts "=========================GAME SUMMARY==============================\n\n"
+          
+        end
+
+      end
+
+      puts "Press Enter to continue ..."
+      user_response = gets.chomp
+
+
+    end 
   end
-
 end
 
- puts "You chose to stay/stick\n\n"
-
-puts "========================YOUR TURN ENDED==========================="
-cards = []
-@dealer_total = 0
-Ruby = Dealer.new("Dealer")
-
-cards << deck.deal
-
-while true
-  
-
-  cards << deck.deal
-
-  total = Ruby.total(cards)
-
-  puts Ruby.name + " has been dealt " + cards.to_s
-  puts Ruby.name + " has a total of " + total.to_s
-
-  if total >= 17
-    @dealer_total = total
-    break
-  end
-  
-end
-
-if Ruby.backjack?(cards) == true
-  puts "You lose #{Nisar.name}, #{Ruby.name} has BlackJack"
-  exit
-elsif Ruby.bust?(total) == true
-  puts "You win #{Nisar.name}, #{Ruby.name} has busted"
-  exit
-elsif @player_total > @dealer_total           
-  puts "You won the game #{Nisar.name}"
-elsif @dealer_total > @player_total
-  puts "#{Ruby.name} won the game"
-elsif @dealer_total == @player_total
-  puts "The game was a tie"
-end
-
-
+game = Blackjack.new.run
 
 
 
