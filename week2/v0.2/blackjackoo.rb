@@ -187,6 +187,20 @@ class Blackjack
 
   end
 
+  def pause(duration)
+  
+    puts "please wait >>>>>>>>>\n"
+
+    (1..duration).each do |pause|
+      sleep 0.1
+      print '#'
+
+    end
+
+    puts "\n"
+
+  end
+
   def run
 
     loop do
@@ -216,6 +230,8 @@ class Blackjack
 
         puts "==========================YOUR TURN=================================="
         puts "Dealing >>>>>>>>>"
+
+        pause(10)
 
         cards << deck.deal
         
@@ -254,6 +270,7 @@ class Blackjack
           while true
             
             puts "==========================DEALER TURN============================="
+            pause(20)
 
             cards << deck.deal
 
