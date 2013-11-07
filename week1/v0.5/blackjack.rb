@@ -120,6 +120,20 @@ def JQKA(card)
     
 end
 
+def pause(duration)
+  
+  puts "please wait >>>>>>>>>\n"
+
+  (1..duration).each do |pause|
+    sleep 0.1
+    print '#'
+
+  end
+
+  puts "\n"
+
+end
+
 def show_cards(current_cards, card_number_total)
 
     puts "#{current_cards}\n\n"
@@ -170,7 +184,7 @@ catch(:stop) do
     puts "==========================YOUR TURN=================================="
     puts "Dealing >>>>>>>>>"
 
-    sleep 1
+    pause(10)
 
     deal_card
     card = @card.to_s.tr '"[]',''
@@ -222,9 +236,7 @@ catch(:stop) do
         while true
 
           puts "==========================DEALER TURN============================="
-          puts "Dealing, please wait >>>>>>>>>\n\n"
-
-          sleep 1
+          pause(10)
 
           deal_card
           card = @card.to_s.tr '"[]',''
@@ -242,9 +254,7 @@ catch(:stop) do
 
           show_cards(@current_dealer_cards, @dealer_card_number_total)
 
-          puts "please wait >>>>>>>>>\n\n"
-
-          sleep 4
+          pause(40)
 
           if @dealer_card_number_total >= 17
             
