@@ -11,7 +11,7 @@ get '/login' do
   erb :login_form
 end
 
-post '/startgame' do
+post '/game' do
   erb :game
 end
 
