@@ -106,7 +106,6 @@ helpers do
       end
       return card  
     end
-
 end
 
 get '/' do
