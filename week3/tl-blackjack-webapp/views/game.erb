@@ -2,7 +2,7 @@
 
 <h4><%="Hello #{session[:username]}, welcome to the Blackjack Game\n"%></h4>
 
-<h4><%="#{session[:username]} has #{session[:player_cards]}"%></h4>
+<!-- <h4><%="#{session[:username]} has #{session[:player_cards]}"%></h4> -->
 <h4><%="#{session[:username]} has #{session[:total]}"%></h4>
 
 <%cards = get_filenames_of_cards(session[:player_cards])%>
@@ -13,9 +13,9 @@
 
 <%if session[:player_stayed] == false%>
 	<%if bust?(session[:total]) == true%>
-		<%="#{session[:username]} has busted"%>
+		<h4><%="#{session[:username]}, you busted, Dealer wins"%></h4>
 	<%elsif blackjack?(session[:player_cards]) == true%>
-		<%="#{session[:username]} has Blackjack"%>
+		<h4><%="#{session[:username]}, you have Blackjack, you win"%></h4>
 	<%else%>
 		<form action='/hit' method='post'>
 	  	<button type="submit" class="btn btn-warning">Hit</button>
@@ -26,10 +26,9 @@
 		</form>
 	<%end%>
 <%elsif session[:player_stayed] == true%>
-	<h4>Dealer turn</h4>
 
 	<%deal("Dealer")%>
-	<h4><%="Dealer has #{session[:dealer_cards]}"%></h4>
+	<!-- <h4><%="Dealer has #{session[:dealer_cards]}"%></h4> -->
 
 	<%session[:dealer_total] = total(session[:dealer_cards])%>
 	<h4><%="Dealer has #{session[:dealer_total]}"%></h4>
@@ -41,14 +40,14 @@
 	<%end%>
 
 	<%if bust?(session[:dealer_total]) == true%>
-		<h4><%="Dealer has busted, #{session[:player_name]}"%></h4>
+		<h4><%="Dealer has busted, you won #{session[:username]}"%></h4>
 	<%elsif blackjack?(session[:player_cards]) == true%>
-		<h4>Dealer has Blackjack</h4>
+		<h4><%="Dealer has Blackjack, you lost #{session[:username]}"%></h4>
 	<%elsif session[:dealer_total] >= 17%>
 		<%if session[:total] > session[:dealer_total]%>         
-			<h4><%="You won the game #{session[:player_name]}"%></h4>
+			<h4><%="You won the game #{session[:username]}"%></h4>
 		<%elsif session[:dealer_total] > session[:total]%>
-			<h4>Dealer won the game</h4>
+			<h4><%="Dealer has won, you lost #{session[:username]}"%></h4>
 		<%elsif session[:dealer_total] == session[:total]%>
 			<h4>The game was a tie</h4>
 		<%end%>
