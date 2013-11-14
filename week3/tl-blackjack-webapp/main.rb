@@ -15,6 +15,54 @@ helpers do
     session[:card_deck] = deck.shuffle!
   end
 
+  def total(cards)
+
+      eleven_found = 0
+      total = 0
+      cards.each do |x|
+      
+        card_value = x[1,2]      
+
+        if card_value == "J" || card_value == "Q" || card_value == "K"
+          card_value = "10"
+        elsif card_value == "A"
+          card_value = "11"
+          eleven_found = eleven_found + 1
+        end
+
+        card_value = card_value.to_i
+        total = total +  card_value
+
+      end
+      
+      if total >= 22 && eleven_found >= 1
+        total = total - (10 * eleven_found)
+      end
+
+      return total
+    end
+
+    def blackjack?(cards)
+      
+      if cards.count == 2 
+      
+        if total(cards) == 21
+          true
+        end
+
+      end
+      
+    end
+
+    def bust?(total)
+      
+        if total > 21
+          true
+        end
+      
+    end
+
+
 end
 
 get '/' do
@@ -28,19 +76,16 @@ get '/login' do
 end
 
 post '/game' do
+  session[:username] = params[:username]
    if session[:player_cards].empty?
     deal
     deal
+    session[:total] = total(session[:player_cards])
   end
   erb :game
 end
   
 get '/game' do
-  session[:username] = params[:username]
-  if session[:player_cards].empty?
-    deal
-    deal
-  end
   erb :game
 end
 

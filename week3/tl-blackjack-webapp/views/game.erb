@@ -3,14 +3,22 @@
 <h4><%="Hello #{session[:username]}, welcome to the Blackjack Game\n"%></h4>
 
 <h5><%="#{session[:username]} has #{session[:player_cards]}"%></h5>
+<h6><%="#{session[:username]} has #{session[:total]}"%></h6>
 
-<form action='/hit' method='post'>
-  <button type="submit" class="btn btn-warning">Hit</button>
-</form>
+<%if bust?(session[:total]) == true%>
+	<%="#{session[:username]} has busted"%>
+<%elsif blackjack?(session[:player_cards]) == true%>
+	<%="#{session[:username]} has Blackjack"%>
+<%else%>
+	<form action='/hit' method='post'>
+  	<button type="submit" class="btn btn-warning">Hit</button>
+	</form>
 
-<form action='/stay' method='post'>
-  <button type="submit" class="btn btn-info">Stay</button>
-</form>
+	<form action='/stay' method='post'>
+	  <button type="submit" class="btn btn-info">Stay</button>
+	</form>
+<%end%>
+
 
 
 
