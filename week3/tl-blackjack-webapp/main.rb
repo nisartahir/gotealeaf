@@ -4,9 +4,12 @@ require 'sinatra'
 set :sessions, true
 
 helpers do
-  def deal
-    #"<deal>#{text}</deal>"
-    session[:player_cards] << session[:card_deck].pop
+  def deal(who_is_playing)
+    if who_is_playing == "Player"
+      session[:player_cards] << session[:card_deck].pop
+    elsif who_is_playing == "Dealer"
+      session[:dealer_cards] << session[:card_deck].pop
+    end
   end
 
   def card_deck
@@ -111,7 +114,9 @@ get '/' do
 end
 
 get '/login' do
+  session[:player_stayed] = false
   session[:player_cards] = []
+  session[:dealer_cards] = []
   card_deck
   erb :login_form
 end
@@ -119,8 +124,8 @@ end
 post '/game' do
   session[:username] = params[:username]
    if session[:player_cards].empty?
-    deal
-    deal
+    deal("Player")
+    deal("Player")
     session[:total] = total(session[:player_cards])
   end
   erb :game
@@ -137,5 +142,6 @@ end
 
 post '/stay' do
 	erb :stay
+  redirect '/game'
 end
 

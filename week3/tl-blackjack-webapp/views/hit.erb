@@ -1,2 +1,6 @@
-<%session[:player_cards] = deal%>
-<%session[:total] = total(session[:player_cards])%>
+<%if session[:player_stayed] == false%>
+	<%session[:player_cards] = deal("Player")%>
+	<%session[:total] = total(session[:player_cards])%>
+<%elsif session[:player_stayed] == true%>
+	<%session[:dealer_total] = total(session[:dealer_cards])%>
+<%end%>
