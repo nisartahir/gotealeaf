@@ -107,6 +107,10 @@ helpers do
       return card  
     end
 
+    def show_card_covered
+      
+    end
+
 end
 
 get '/' do
@@ -123,7 +127,7 @@ end
 
 post '/game' do
   session[:username] = params[:username]
-   if session[:player_cards].empty?
+  if session[:player_cards].empty?
     deal("Player")
     deal("Player")
     session[:total] = total(session[:player_cards])

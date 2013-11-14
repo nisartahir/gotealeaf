@@ -1,6 +1,6 @@
 
 
-<h4><%="Hello #{session[:username]}, welcome to the Blackjack Game\n"%></h4>
+<p><h4><%="Hello #{session[:username]}, welcome to the Blackjack Game\n"%></h4>
 
 <!-- <h4><%="#{session[:username]} has #{session[:player_cards]}"%></h4> -->
 <h4><%="#{session[:username]} has #{session[:total]}"%></h4>
@@ -17,13 +17,15 @@
 	<%elsif blackjack?(session[:player_cards]) == true%>
 		<h4><%="#{session[:username]}, you have Blackjack, you win"%></h4>
 	<%else%>
-		<form action='/hit' method='post'>
+    <img src="/images/cards/cover.jpg"></p>
+		<p>
+    <form id='hit_form' action='/hit' method='post' width="48">
 	  	<button type="submit" class="btn btn-warning">Hit</button>
-		</form>
+	  </form>
 
-		<form action='/stay' method='post'>
+		<form id='stay_form' action='/stay' method='post'>
 		  <button type="submit" class="btn btn-info">Stay</button>
-		</form>
+		</form></p>
 	<%end%>
 <%elsif session[:player_stayed] == true%>
 
@@ -52,6 +54,7 @@
 			<h4>The game was a tie</h4>
 		<%end%>
 	<%else%>
+    <img src="/images/cards/cover.jpg">
 		<h4>Dealer will hit again</h4>
 		<form action='/hit' method='post'>
 	  	<button type="submit" class="btn btn-info">Click for dealer's next card</button>
