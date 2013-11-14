@@ -77,13 +77,14 @@ helpers do
     end
 
     def card_suit_name(suit)
-      if suit == 'D'
+      case suit
+      when "D"
         suit = "diamonds"
-      elsif suit == 'H'
+      when "H"
         suit = "hearts"
-      elsif suit == 'C'
+      when "C"
         suit = "clubs"
-      elsif suit == 'S'
+      when "S"
         suit = "spades"
       end
       return suit
