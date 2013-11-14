@@ -62,6 +62,46 @@ helpers do
       
     end
 
+    def get_filenames_of_cards(cards)
+      cards_with_names =[]
+      cards.each do |x|
+        card_suit = x[0,1]
+        card_value = x[1,2]
+        if card_value.to_i
+          cards_with_names << "/images/cards/#{card_suit_name(card_suit)}_#{card_value_name(card_value)}.jpg"  
+        else    
+          cards_with_names << "/images/cards/#{card_suit_name(card_suit)}_#{card_value}.jpg"
+        end
+      end
+      return cards_with_names
+    end
+
+    def card_suit_name(suit)
+      if suit == 'D'
+        suit = "diamonds"
+      elsif suit == 'H'
+        suit = "hearts"
+      elsif suit == 'C'
+        suit = "clubs"
+      elsif suit == 'S'
+        suit = "spades"
+      end
+      return suit
+    end
+
+    def card_value_name(card)
+      case card
+      when "A"
+        card = "ace"
+      when "K"
+        card = "king"
+      when "Q"
+        card = "queen"
+      when "J"
+        card = "jack"        
+      end
+      return card  
+    end
 
 end
 

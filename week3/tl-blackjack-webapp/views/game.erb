@@ -5,6 +5,12 @@
 <h5><%="#{session[:username]} has #{session[:player_cards]}"%></h5>
 <h6><%="#{session[:username]} has #{session[:total]}"%></h6>
 
+<%cards = get_filenames_of_cards(session[:player_cards])%>
+
+<%cards.each do |card|%>
+	<img src="<%="#{card}"%>">
+<%end%>
+
 <%if bust?(session[:total]) == true%>
 	<%="#{session[:username]} has busted"%>
 <%elsif blackjack?(session[:player_cards]) == true%>
