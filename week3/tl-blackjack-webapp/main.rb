@@ -107,10 +107,6 @@ helpers do
       return card  
     end
 
-    def show_card_covered
-      
-    end
-
 end
 
 get '/' do
